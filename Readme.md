@@ -9,9 +9,9 @@
 Το API υποστηρίζει βασικές λειτουργίες:
 
 - **GET /tasks**: Λίστα όλων των tasks
-- **GET /tasks/<id>**: Ανάκτηση συγκεκριμένου task
+- **GET /tasks/id**: Ανάκτηση συγκεκριμένου task
 - **POST /tasks**: Δημιουργία νέου task
-- **DELETE /tasks/<id>**: Διαγραφή task
+- **DELETE /tasks/id**: Διαγραφή task
 
 Τα δεδομένα αποθηκεύονται σε αρχείο `tasks.txt` σε μορφή JSON.  
 Υπάρχουν επίσης **unit tests** με pytest για να ελέγχεται η σωστή λειτουργία του API.
