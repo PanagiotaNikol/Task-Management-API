@@ -1,7 +1,7 @@
-# Yaml file for GitHub Actions 
+# Yaml file for GitHub Actions workflow
 name: Python Flask API CI
 
-
+# όποτε γίνεται push ή pull request στο main branch
 on:
   push:
     branches:
@@ -12,23 +12,28 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
 
     steps:
+      # Κάνουμε checkout τον κώδικα από το repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
+      # Εγκαθιστούμε Flask και pytest
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flask pytest
 
+      # Εκτελούμε τα unit tests
       - name: Run tests
         run: |
           pytest
+
 

@@ -5,31 +5,30 @@ import os
 app = Flask(__name__)
 FILE_NAME = "tasks.txt"
 
-# Δημιουργία αρχείου αν δεν υπάρχει
+# Δημιουργεί το αρχείο tasks.txt αν δεν υπάρχει
 if not os.path.exists(FILE_NAME):
     with open(FILE_NAME, "w") as f:
         json.dump([], f)
 
+# Διαβάζει όλα τα tasks από το αρχείο
 def read_tasks():
     with open(FILE_NAME, "r") as f:
         return json.load(f)
 
+# Γράφει/αποθηκεύει τα tasks στο αρχείο
 def write_tasks(tasks):
     with open(FILE_NAME, "w") as f:
         json.dump(tasks, f, indent=4)
 
-# Αρχική σελίδα - μόνο hints
+# Αρχική σελίδα με hints για το API
 @app.route("/")
 def home():
     return """
     <html>
-        <head>
-            <title>Task API</title>
-        </head>
+        <head><title>Task API</title></head>
         <body>
             <h1>Task Management API</h1>
             <p>Welcome. This API manages tasks in JSON format.</p>
-            <p>Try exploring:</p>
             <ul>
                 <li>/tasks → list all tasks</li>
                 <li>/tasks/1 → view task with id 1</li>
@@ -39,13 +38,13 @@ def home():
     </html>
     """
 
-# Get all tasks
+# Επιστρέφει όλα τα tasks
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
     print("GET request: Επιστροφή όλων των tasks")
     return jsonify(read_tasks())
 
-# Get task by id
+# Επιστρέφει ένα task με συγκεκριμένο id
 @app.route("/tasks/<int:task_id>", methods=["GET"])
 def get_task_by_id(task_id):
     print(f"GET request: Αναζήτηση task με id {task_id}")
@@ -55,7 +54,7 @@ def get_task_by_id(task_id):
             return jsonify(task)
     return jsonify({"error": "Task not found"}), 404
 
-# Create task
+# Δημιουργεί ένα νέο task
 @app.route("/tasks", methods=["POST"])
 def create_task():
     tasks = read_tasks()
@@ -74,10 +73,9 @@ def create_task():
     tasks.append(new_task)
     write_tasks(tasks)
 
-
     return jsonify({"message": "Task created successfully"}), 201
 
-# Delete task
+# Διαγράφει ένα task με συγκεκριμένο id
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
     tasks = read_tasks()
@@ -86,7 +84,9 @@ def delete_task(task_id):
 
     return jsonify({"message": "Task deleted successfully"})
 
+# Εκκίνηση του Flask server
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
 
 
